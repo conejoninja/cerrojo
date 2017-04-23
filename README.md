@@ -66,4 +66,4 @@ If you would like to donate via Bitcoin, please send your donation to this walle
 
    ![](https://raw.githubusercontent.com/conejoninja/cerrojo/master/assets/qr.png)
 
-Bitcoin: 1G9d7uVvioNt8Emsv6fVmCdAPc41nX1c8J
+Bitcoin: **1G9d7uVvioNt8Emsv6fVmCdAPc41nX1c8J**
