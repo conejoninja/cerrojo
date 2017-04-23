@@ -60,10 +60,10 @@ limitations under the License.
 ## Note
 
 
-![](https://raw.githubusercontent.com/conejoninja/cerrojo/assets/ribbon.png)
+![](https://raw.githubusercontent.com/conejoninja/cerrojo/master/assets/ribbon.png)
 
 If you would like to donate via Bitcoin, please send your donation to this wallet:
 
-   ![](https://raw.githubusercontent.com/conejoninja/cerrojo/assets/qr.png)
+   ![](https://raw.githubusercontent.com/conejoninja/cerrojo/master/assets/qr.png)
 
 Bitcoin: 1G9d7uVvioNt8Emsv6fVmCdAPc41nX1c8J
