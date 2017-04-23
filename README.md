@@ -57,7 +57,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 
-## Note
+## Notes
+
+For a TREZOR-specific version of this project, please refer to [TESORO project](https://https://github.com/conejoninja/tesoro/), which was the seed of this one.
 
 
 ![](https://raw.githubusercontent.com/conejoninja/cerrojo/master/assets/ribbon.png)
