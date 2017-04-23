@@ -508,7 +508,7 @@ func (c *Client) GetMasterKey() []byte {
 	masterKey, _ := hex.DecodeString(c.info.MasterKey)
 	return c.CipherKeyValue(
 		true,
-		"Activate " + c.info.Name + " Password Manager?",
+		"Activate "+c.info.Name+" Password Manager?",
 		masterKey,
 		StringToBIP32Path("m/10016'/0"),
 		[]byte{},
@@ -726,7 +726,7 @@ func (c *Client) ReadUntil() (string, uint16) {
 func (c *Client) Read() (string, uint16) {
 	marshalled, msgType, _, err := c.t.Read()
 	if err != nil {
-		return "Error reading", 999
+		return "Error reading", msgType
 	}
 
 	str := "Uncaught message type " + strconv.Itoa(int(msgType))

@@ -5,3 +5,10 @@ type Transport interface {
 	Read() ([]byte, uint16, int, error)
 	Close()
 }
+
+const (
+	TimeoutError = iota + 999
+	ProtocolError
+	EndpointError
+	DisconnectedError
+)

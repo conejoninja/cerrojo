@@ -75,5 +75,20 @@ func (t *TransportHID) Read() ([]byte, uint16, int, error) {
 			return marshalled, msgType, originalMsgLength, nil
 		}
 	}
-	return marshalled, 999, 0, err
+	var msgType uint16
+	switch err.Error() {
+	case "protocol error":
+		msgType = ProtocolError
+		break
+	case "cannot send after transport endpoint shutdown":
+		msgType = EndpointError
+		break
+	case "no such device":
+		msgType = DisconnectedError
+		break
+	default:
+		msgType = TimeoutError
+		break
+	}
+	return marshalled, msgType, 0, err
 }

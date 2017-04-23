@@ -27,6 +27,18 @@ var client cerrojo.Client
 var prompt *readline.Instance
 
 func main() {
+
+	numberDevices := connect()
+	if numberDevices == 0 {
+		fmt.Println("No devices found, make sure your device is connected")
+	} else {
+		fmt.Printf("Found %d devices connected\n", numberDevices)
+		shell()
+		defer client.CloseTransport()
+	}
+}
+
+func connect() int {
 	numberDevices := 0
 	devicesConf := devices.GetDevices()
 	hid.UsbWalk(func(device hid.Device) {
@@ -41,13 +53,7 @@ func main() {
 			}
 		}
 	})
-	if numberDevices == 0 {
-		fmt.Println("No devices found, make sure your device is connected")
-	} else {
-		fmt.Printf("Found %d devices connected\n", numberDevices)
-		shell()
-		defer client.CloseTransport()
-	}
+	return numberDevices
 }
 
 func call(msg []byte) (string, uint16) {
@@ -77,6 +83,11 @@ func call(msg []byte) (string, uint16) {
 			fmt.Println("ERR", err)
 		}
 		str, msgType = call(client.WordAck(line))
+	} else if msgType == transport.EndpointError || msgType == transport.ProtocolError || msgType == transport.DisconnectedError {
+		fmt.Println("Device disconnected, trying to reconnect")
+		if connect() > 0 {
+			return call(msg)
+		}
 	}
 
 	return str, msgType
