@@ -547,6 +547,7 @@ func shell() {
 				filename, _, encKey := cerrojo.GetFileEncKey(masterKey)
 
 				// OPEN FILE
+				fmt.Println("FILENAME", filename)
 				contentByte, err := readFile("./" + filename)
 				content := string(contentByte)
 				if err == nil {

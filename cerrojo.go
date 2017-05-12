@@ -1120,10 +1120,14 @@ func DecryptStorage(content, key string) (Storage, error) {
 	plainText, err := AES256GCMDecrypt([]byte(content[28:]+content[12:28]), cipherKey, []byte(content[:12]), []byte(content[12:28]))
 
 	if err != nil {
+		fmt.Println("ERROR DECRYPT STORAGE", err)
 		log.Panic("Error decrypting")
 	}
 
 	var pc Storage
+	fmt.Println("\n\n\nPLAIN JSON FROM SLIP-0016")
+	fmt.Println(string(plainText))
+	fmt.Println("\n\n\n")
 	err = json.Unmarshal(plainText, &pc)
 	return pc, err
 }
