@@ -17,7 +17,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 
 	"bufio"
 	"encoding/hex"
@@ -26,7 +25,7 @@ import (
 	"github.com/conejoninja/cerrojo"
 	"github.com/conejoninja/cerrojo/devices"
 	"github.com/conejoninja/cerrojo/transport"
-	"github.com/karalabe/gousb/usb"
+	"github.com/karalabe/hid"
 )
 
 var client cerrojo.Client
@@ -34,50 +33,17 @@ var dconf devices.Device
 
 func main() {
 	devicesConf := devices.GetDevices()
-	//dconf = devices.GetDevice("trezor")
-	ctx, err := usb.NewContext()
-	if err != nil {
-		log.Fatalf("context: %v", err)
-	}
-	defer ctx.Close()
 
-	devs, err := ctx.ListDevices(func(desc *usb.Descriptor) bool {
-
-		if int(desc.Vendor) == 21324 && int(desc.Product) == 1 {
-			fmt.Println("TREZOR device found")
-			return true
-		}
-
-		return false
-	})
-
-	// All Devices returned from ListDevices must be closed.
-	defer func() {
-		for _, d := range devs {
-			d.Close()
-		}
-	}()
-
-	// ListDevices can occaionally fail, so be sure to check its return value.
-	if err != nil {
-		log.Fatalf("list: %s", err)
+	var devInfo hid.DeviceInfo
+	for _, dev := range hid.Enumerate(21324, 1) {
+		fmt.Println("TREZOR device found")
+		devInfo = dev
+		break
 	}
 
-	if len(devs) < 1 {
-		fmt.Println("NO TREZOR devices found, please CONNECT your TREZOR")
-		return
-	} else if len(devs) > 1 {
-		fmt.Println("MULTIPLE TREZOR devices found, please connect ONLY ONE TREZOR")
-		return
-	}
-	//for _, dev := range devs {
-		// Once the device has been selected from ListDevices, it is opened
-		// and can be interacted with.
-
-		var t transport.GoUSBHID
-		t.SetDevice(*devs[0])
-		client.SetTransport(&t, devicesConf["trezor"])
-	//}
+	var t transport.HIDAPI
+	t.SetDevice(devInfo)
+	client.SetTransport(&t, devicesConf["trezor"])
 
 	fmt.Println("Please SET your device to NOT have a PIN NOR A PASSPHRASE")
 	fmt.Println("Sending PING to device, it should appear \"PONG\"")
@@ -126,10 +92,10 @@ func main() {
 				pswdStr := ""
 				noteStr := ""
 				if len(pswd) > 2 {
-					pswdStr = pswd[1:len(pswd)-1]
+					pswdStr = pswd[1 : len(pswd)-1]
 				}
 				if len(note) > 2 {
-					noteStr = note[1:len(note)-1]
+					noteStr = note[1 : len(note)-1]
 				}
 				printEntryExtended(k, e, pswdStr, noteStr)
 
